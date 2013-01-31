@@ -95,6 +95,7 @@
 #include "wrappers.h"
 #include "terrain.h"
 #include "ingameop.h"
+#include "qtplugins.h"
 #include "qtscript.h"
 #include "template.h"
 
@@ -997,6 +998,12 @@ bool stageTwoInitialise(void)
 		return false;
 	}
 
+	if (!initPlugins())             // Initialise the plugins system
+        {
+               return false;
+        }
+
+
 	// keymappings
 	keyClearMappings();
 	keyInitMappings(false);
@@ -1112,6 +1119,8 @@ bool stageThreeInitialise(void)
 
 	prepareScripts();
 
+	preparePlugins();
+
 	if (!fpathInitialise())
 	{
 		return false;
@@ -1181,6 +1190,11 @@ bool stageThreeShutDown(void)
 	// There is an assymetry in scripts initialization and destruction, due
 	// the many different ways scripts get loaded.
 	if (!shutdownScripts())
+	{
+		return false;
+	}
+
+	if (!shutdownPlugins())
 	{
 		return false;
 	}

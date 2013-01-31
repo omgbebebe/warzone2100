@@ -86,6 +86,7 @@
 #include "keybind.h"
 #include "wrappers.h"
 #include "random.h"
+#include "qtplugins.h"
 #include "qtscript.h"
 
 #include "warzoneconfig.h"
@@ -574,6 +575,8 @@ static void gameStateUpdate()
 		}
 		updateScripts();
 	}
+
+	updatePlugins();
 
 	// Update abandoned structures
 	handleAbandonedStructures();
