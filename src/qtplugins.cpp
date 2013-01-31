@@ -16,7 +16,7 @@ bool loadPlugin()
     QObject *plugin = pluginLoader.instance();
     if (plugin) {
       qtPluginsInterface = qobject_cast<QtPluginsInterface *>(plugin);
-      if (qBotNetworkInterface)
+      if (qtPluginsInterface)
 	return true;
     }
   }
