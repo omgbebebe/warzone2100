@@ -46,6 +46,10 @@
 #include "visibility.h"
 #include "qtscript.h"
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
 // the initial value for the object ID
 #define OBJ_ID_INIT 20000
 
@@ -191,6 +195,9 @@ void objmemUpdate(void)
 				break;
 			}
 			psCBObjDestroyed = NULL;
+			#ifdef WITH_QTPLUGINS
+			qtPlugins->triggerEventDestroyed(psCurr);
+			#endif
 			triggerEventDestroyed(psCurr);
 
 			psPrev = psCurr;

@@ -80,6 +80,10 @@
 #include "keybind.h"
 #include <time.h>
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
 #if defined(WZ_OS_MAC)
 // NOTE: Moving these defines is likely to (and has in the past) break the mac builds
 # include <CoreServices/CoreServices.h>
@@ -796,6 +800,9 @@ static void startGameLoop(void)
 	{
 		eventFireCallbackTrigger((TRIGGER_TYPE)CALL_START_NEXT_LEVEL);
 	}
+	#ifdef WITH_QTPLUGINS
+	qtPlugins->triggerEvent(TRIGGER_START_LEVEL);
+	#endif
 	triggerEvent(TRIGGER_START_LEVEL);
 	screen_disableMapPreview();
 }

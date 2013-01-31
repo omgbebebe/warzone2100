@@ -44,6 +44,10 @@
 #include "display.h"
 #include "qtscript.h"
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
 // ---------------------------------------------------------------------
 // Selects all units owned by the player - onscreen toggle.
 static unsigned int selSelectAllUnits(unsigned int player, bool bOnScreen)
@@ -543,6 +547,9 @@ void selNextSpecifiedBuilding(STRUCTURE_TYPE structType)
 			psOldStruct->selected = false;
 		}
 		psResult->selected = true;
+		#ifdef WITH_QTPLUGINS
+		qtPlugins->triggerEventSelected();
+		#endif
 		triggerEventSelected();
 	}
 	else

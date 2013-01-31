@@ -94,6 +94,10 @@
 #include "objmem.h"
 #endif
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
 #include <numeric>
 
 
@@ -575,6 +579,10 @@ static void gameStateUpdate()
 		updateScripts();
 	}
 
+#ifdef WITH_QTPLUGINS
+	updatePlugins();
+#endif
+
 	// Update abandoned structures
 	handleAbandonedStructures();
 
@@ -756,6 +764,9 @@ void videoLoop(void)
 			{
 				displayGameOver(getScriptWinLoseVideo() == PLAY_WIN);
 			}
+			#ifdef WITH_QTPLUGINS
+			qtPlugins->triggerEvent(TRIGGER_VIDEO_QUIT);
+			#endif
 			triggerEvent(TRIGGER_VIDEO_QUIT);
 		}
 	}

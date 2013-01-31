@@ -98,6 +98,10 @@
 #include "qtscript.h"
 #include "template.h"
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
 static void	initMiscVars(void);
 
 static const char UserMusicPath[] = "music";
@@ -551,6 +555,17 @@ bool systemInitialise(void)
 
 	readAIs();
 
+#ifdef WITH_QTPLUGINS
+	if (!initPlugins())             // Initialise the plugins system
+    {
+        return false;
+    }
+    if (!preparePlugins())
+    {
+        return false;
+    }
+#endif
+
 	return true;
 }
 
@@ -566,6 +581,10 @@ void systemShutdown(void)
 	{
 		free(mod_list);
 	}
+
+#ifdef WITH_QTPLUGINS
+	shutdownPlugins();             // Shutdown the plugins system
+#endif
 
 	shutdownEffectsSystem();
 	keyClearMappings();
@@ -997,6 +1016,8 @@ bool stageTwoInitialise(void)
 		return false;
 	}
 
+
+
 	// keymappings
 	keyClearMappings();
 	keyInitMappings(false);
@@ -1165,7 +1186,13 @@ bool stageThreeInitialise(void)
 	if (getLevelLoadType() != GTYPE_SAVE_MIDMISSION)
 	{
 		eventFireCallbackTrigger((TRIGGER_TYPE)CALL_GAMEINIT);
+		#ifdef WITH_QTPLUGINS
+		qtPlugins->triggerEvent(TRIGGER_GAME_INIT);
+		#endif
 		triggerEvent(TRIGGER_GAME_INIT);
+#ifdef WITH_QTPLUGINS
+        qtPlugins->evGameInit();
+#endif
 	}
 
 	return true;

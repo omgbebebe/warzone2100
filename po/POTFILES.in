@@ -293,6 +293,7 @@ src/order.cpp
 src/pointtree.cpp
 src/power.cpp
 src/projectile.cpp
+src/qtplugins.cpp
 src/qtscript.cpp
 src/qtscriptfuncs.cpp
 src/radar.cpp

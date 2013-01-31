@@ -101,6 +101,7 @@ AC_ARG_WITH([backend],
 AM_CONDITIONAL([BACKEND_QT], test "$backend" = "qt")
 AM_CONDITIONAL([BACKEND_SDL], test "$backend" = "sdl")
 
+
 # Check for Qt
 if test "$backend" = "qt"; then
 	AC_MSG_RESULT([Qt])
@@ -120,6 +121,15 @@ AC_SUBST(QT4_VERSION)
 AC_PATH_PROGS(MOC4, [moc-qt4 moc])
 AC_PATH_PROGS(UIC4, [uic-qt4 uic])
 AC_PATH_PROGS(RCC4, [rcc-qt4 rcc])
+
+AC_MSG_CHECKING([for qtplugins])
+AC_ARG_WITH([qtplugins],
+    AS_HELP_STRING([--without-qtplugins], [disable build with QtPlugins subsystem]))
+AM_CONDITIONAL([WITH_QTPLUGINS], test "x$with_qtplugins" = "xyes")
+
+if test "x$with_qtplugins" = "xyes"; then
+    WZ_CPPFLAGS="${WZ_CPPFLAGS} -DWITH_QTPLUGINS"
+fi
 
 # Check for compiler
 case ${CC} in
@@ -476,6 +486,7 @@ AC_CONFIG_FILES([Makefile
 		lib/ivis_opengl/Makefile
 		lib/netplay/Makefile
 		lib/qtgame/Makefile
+        lib/qtplugins/Makefile
 		lib/sdl/Makefile
 		lib/script/Makefile
 		lib/sequence/Makefile

@@ -80,6 +80,10 @@
 #include "keybind.h"
 #include "qtscript.h"
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
 //#define DEBUG_SCROLLTABS 	//enable to see tab scroll button info for buttons
 
 // Empty edit window
@@ -1647,6 +1651,9 @@ INT_RETVAL intRunWidgets(void)
 							eventFireCallbackTrigger((TRIGGER_TYPE)CALL_NEWDROID);	// notify scripts so it will get assigned jobs
 							psScrCBNewDroid = NULL;
 
+							#ifdef WITH_QTPLUGINS
+							qtPlugins->triggerEventDroidBuilt(psDroid, NULL);
+							#endif
 							triggerEventDroidBuilt(psDroid, NULL);
 						}
 						else
@@ -1916,6 +1923,9 @@ static void intSelectDroid(BASE_OBJECT *psObj)
 		clearSelection();
 		((DROID *)psObj)->selected = true;
 	}
+	#ifdef WITH_QTPLUGINS
+	qtPlugins->triggerEventSelected();
+	#endif
 	triggerEventSelected();
 }
 
@@ -2002,6 +2012,9 @@ static void intProcessObject(UDWORD id)
 			widgSetButtonState(psWScreen, statButID, WBUT_CLICKLOCK);
 			intAddObjectStats(psObj, statButID);
 		}
+		#ifdef WITH_QTPLUGINS
+		qtPlugins->triggerEventSelected();
+		#endif
 		triggerEventSelected();
 	}
 	else if (id >= IDOBJ_OBJSTART && id <= IDOBJ_OBJEND)
@@ -2031,6 +2044,9 @@ static void intProcessObject(UDWORD id)
 
 				/* Select new one */
 				((STRUCTURE *)psObj)->selected = true;
+				#ifdef WITH_QTPLUGINS
+				qtPlugins->triggerEventSelected();
+				#endif
 				triggerEventSelected();
 			}
 
@@ -2123,6 +2139,9 @@ static void intProcessObject(UDWORD id)
 					psCurr->selected = false;
 				}
 				psObj->selected = true;
+				#ifdef WITH_QTPLUGINS
+				qtPlugins->triggerEventSelected();
+				#endif
 				triggerEventSelected();
 			}
 		}
@@ -5411,6 +5430,9 @@ STRUCTURE *intCheckForStructure(UDWORD structType)
 			psSel = psStruct;
 		}
 	}
+	#ifdef WITH_QTPLUGINS
+	qtPlugins->triggerEventSelected();
+	#endif
 	triggerEventSelected();
 	return psSel;
 }
@@ -5717,6 +5739,9 @@ STRUCTURE *intGotoNextStructureType(UDWORD structType, bool JumpTo, bool CancelD
 		intSetMapPos(CurrentStruct->pos.x, CurrentStruct->pos.y);
 	}
 
+	#ifdef WITH_QTPLUGINS
+	qtPlugins->triggerEventSelected();
+	#endif
 	triggerEventSelected();
 
 	return CurrentStruct;

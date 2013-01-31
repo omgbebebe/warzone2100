@@ -37,6 +37,10 @@
 #include "random.h"
 #include "qtscript.h"
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
 
 /* Fire a weapon at something */
 bool combFire(WEAPON *psWeap, BASE_OBJECT *psAttacker, BASE_OBJECT *psTarget, int weapon_slot)
@@ -392,6 +396,9 @@ int32_t objDamage(BASE_OBJECT *psObj, unsigned damage, unsigned originalhp, WEAP
 		bMultiMessages = bMultiPlayer;
 
 		clustObjectAttacked((BASE_OBJECT *)psObj);
+		#ifdef WITH_QTPLUGINS
+		qtPlugins->triggerEventAttacked(psObj, g_pProjLastAttacker, lastHit);
+		#endif
 		triggerEventAttacked(psObj, g_pProjLastAttacker, lastHit);
 
 		bMultiMessages = bMultiMessagesBackup;

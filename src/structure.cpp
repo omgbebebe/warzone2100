@@ -93,6 +93,11 @@
 
 #include "random.h"
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
+
 //Maximium slope of the terrin for building a structure
 #define MAX_INCLINE		50//80//40
 
@@ -917,6 +922,9 @@ void structureBuild(STRUCTURE *psStruct, DROID *psDroid, int buildPoints, int bu
 
 			audio_StopObjTrack( psDroid, ID_SOUND_CONSTRUCTION_LOOP );
 		}
+		#ifdef WITH_QTPLUGINS
+		qtPlugins->triggerEventStructBuilt(psStruct, psDroid);
+		#endif
 		triggerEventStructBuilt(psStruct, psDroid);
 
 		/* Not needed, but left for backward compatibility */
@@ -2730,6 +2738,9 @@ static void aiUpdateStructure(STRUCTURE *psStructure, bool isMission)
 	    && gameTime - psStructure->asWeaps[0].lastFired > weaponFirePause(&asWeaponStats[psStructure->asWeaps[0].nStat], psStructure->player)
 	    && psStructure->asWeaps[0].ammo > 0)
 	{
+		#ifdef WITH_QTPLUGINS
+		qtPlugins->triggerEventStructureReady(psStructure);
+		#endif
 		triggerEventStructureReady(psStructure);
 		psStructure->asWeaps[0].ammo = 0; // do not fire more than once
 	}
@@ -3541,6 +3552,9 @@ static void aiUpdateStructure(STRUCTURE *psStructure, bool isMission)
 					psDroid->action = DACTION_NONE;
 					psReArmPad->psObj = NULL;
 					auxStructureNonblocking(psStructure);
+					#ifdef WITH_QTPLUGINS
+					qtPlugins->triggerEventDroidIdle(psDroid);
+					#endif
 					triggerEventDroidIdle(psDroid);
 				}
 			}
@@ -5878,6 +5892,9 @@ bool electronicDamage(BASE_OBJECT *psTarget, UDWORD damage, UBYTE attackPlayer)
 
 			// tell the cluster system it has been attacked
 			clustObjectAttacked(psStructure);
+			#ifdef WITH_QTPLUGINS
+			qtPlugins->triggerEventAttacked(psStructure, g_pProjLastAttacker, lastHit);
+			#endif
 			triggerEventAttacked(psStructure, g_pProjLastAttacker, lastHit);
 
 			psStructure->resistance = (SWORD)(psStructure->resistance - damage);
@@ -5926,6 +5943,9 @@ bool electronicDamage(BASE_OBJECT *psTarget, UDWORD damage, UBYTE attackPlayer)
 		{
 			// tell the cluster system it has been attacked
 			clustObjectAttacked(psDroid);
+			#ifdef WITH_QTPLUGINS
+			qtPlugins->triggerEventAttacked(psDroid, g_pProjLastAttacker, lastHit);
+			#endif
 			triggerEventAttacked(psDroid, g_pProjLastAttacker, lastHit);
 
 			psDroid->resistance = (SWORD)(psDroid->resistance - damage);
@@ -7244,6 +7264,9 @@ STRUCTURE * giftSingleStructure(STRUCTURE *psStructure, UBYTE attackPlayer, bool
 			//since the structure isn't being rebuilt, the visibility code needs to be adjusted
 			//make sure this structure is visible to selectedPlayer
 			psStructure->visible[attackPlayer] = UINT8_MAX;
+			#ifdef WITH_QTPLUGINS
+			qtPlugins->triggerEventObjectTransfer(psStructure, attackPlayer);
+			#endif
 			triggerEventObjectTransfer(psStructure, attackPlayer);
 		}
 		intNotifyResearchButton(prevState);
@@ -7326,6 +7349,9 @@ STRUCTURE * giftSingleStructure(STRUCTURE *psStructure, UBYTE attackPlayer, bool
 		{
 			psNewStruct->status = SS_BUILT;
 			buildingComplete(psNewStruct);
+			#ifdef WITH_QTPLUGINS
+			qtPlugins->triggerEventStructBuilt(psStructure, NULL);
+			#endif
 			triggerEventStructBuilt(psStructure, NULL);
 		}
 
@@ -7483,6 +7509,9 @@ void cbNewDroid(STRUCTURE *psFactory, DROID *psDroid)
 	psScrCBNewDroid = NULL;
 	psScrCBNewDroidFact = NULL;
 
+	#ifdef WITH_QTPLUGINS
+	qtPlugins->triggerEventDroidBuilt(psDroid, psFactory);
+	#endif
 	triggerEventDroidBuilt(psDroid, psFactory);
 }
 

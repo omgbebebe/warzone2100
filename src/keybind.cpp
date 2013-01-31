@@ -94,6 +94,10 @@
 #include "qtscript.h"
 #include "multigifts.h"
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
 /*
 	KeyBind.c
 	Holds all the functions that can be mapped to a key.
@@ -412,6 +416,9 @@ void	kf_CloneSelected( void )
 					psScrCBNewDroidFact = NULL;
 					eventFireCallbackTrigger((TRIGGER_TYPE)CALL_NEWDROID);	// notify scripts so it will get assigned jobs
 					psScrCBNewDroid = NULL;
+					#ifdef WITH_QTPLUGINS
+					qtPlugins->triggerEventDroidBuilt(psNewDroid, NULL);
+					#endif
 					triggerEventDroidBuilt(psNewDroid, NULL);
 				}
 				else
@@ -1171,6 +1178,9 @@ void	kf_SelectGrouping( UDWORD	groupNumber)
 		audio_QueueTrack( ID_SOUND_REPORTING );
 		audio_QueueTrack( ID_SOUND_RADIOCLICK_1+(rand()%6) );
 	}
+	#ifdef WITH_QTPLUGINS
+	qtPlugins->triggerEventSelected();
+	#endif
 	triggerEventSelected();
 }
 
@@ -1879,6 +1889,9 @@ STRUCTURE	*psCurr;
 	{
 		setKeyButtonMapping(IDRET_MANUFACTURE);
 	}
+	#ifdef WITH_QTPLUGINS
+	qtPlugins->triggerEventSelected();
+	#endif
 	triggerEventSelected();
 }
 
@@ -1890,6 +1903,9 @@ void	kf_SelectNextResearch(void)
 	{
 		setKeyButtonMapping(IDRET_RESEARCH);
 	}
+	#ifdef WITH_QTPLUGINS
+	qtPlugins->triggerEventSelected();
+	#endif
 	triggerEventSelected();
 }
 
@@ -1897,6 +1913,9 @@ void	kf_SelectNextResearch(void)
 void	kf_SelectNextPowerStation(void)
 {
 	selNextSpecifiedBuilding(REF_POWER_GEN);
+	#ifdef WITH_QTPLUGINS
+	qtPlugins->triggerEventSelected();
+	#endif
 	triggerEventSelected();
 }
 
@@ -1922,6 +1941,9 @@ STRUCTURE	*psCurr;
 	{
 		setKeyButtonMapping(IDRET_MANUFACTURE);
 	}
+	#ifdef WITH_QTPLUGINS
+	qtPlugins->triggerEventSelected();
+	#endif
 	triggerEventSelected();
 }
 

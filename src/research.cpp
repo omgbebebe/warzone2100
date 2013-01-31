@@ -48,6 +48,10 @@
 #include "template.h"
 #include "qtscript.h"
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
 
 //used to calc the research power
 #define RESEARCH_FACTOR		32
@@ -1172,6 +1176,9 @@ void researchResult(UDWORD researchIndex, UBYTE player, bool bDisplay, STRUCTURE
 		CBResFacilityOwner = -1;
 		psCBLastResearch = NULL;
 
+		#ifdef WITH_QTPLUGINS
+		qtPlugins->triggerEventResearched(pResearch, psResearchFacility, player);
+		#endif
 		triggerEventResearched(pResearch, psResearchFacility, player);
 	}
 }

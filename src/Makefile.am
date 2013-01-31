@@ -283,6 +283,10 @@ if BACKEND_SDL
 warzone2100_LIBS += $(top_builddir)/lib/sdl/libsdl.a
 endif
 
+if WITH_QTPLUGINS
+warzone2100_LIBS += $(top_builddir)/lib/qtplugins/libqtplugins.a
+endif
+
 warzone2100_LDADD = $(warzone2100_LIBS) $(LTLIBINTL) $(SDL_LIBS) $(PHYSFS_LIBS) $(PNG_LIBS) $(VORBISFILE_LIBS) $(VORBIS_LIBS) \
 	$(THEORA_LIBS) $(OPENAL_LIBS) $(OPENGLC_LIBS) $(OPENGL_LIBS) $(QT4_LIBS) $(GLEW_LIBS) \
 	$(X_LIBS) $(X_EXTRA_LIBS) $(LDFLAGS)

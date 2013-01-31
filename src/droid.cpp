@@ -85,6 +85,11 @@
 #include "template.h"
 #include "qtscript.h"
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
+
 #define DEFAULT_RECOIL_TIME	(GAME_TICKS_PER_SEC/4)
 #define	DROID_DAMAGE_SPREAD	(16 - rand()%32)
 #define	DROID_REPAIR_SPREAD	(20 - rand()%40)
@@ -130,6 +135,9 @@ void cancelBuild(DROID *psDroid)
 		psScrCBOrderDroid = NULL;
 		psScrCBOrder = DORDER_NONE;
 
+		#ifdef WITH_QTPLUGINS
+		qtPlugins->triggerEventDroidIdle(psDroid);
+		#endif
 		triggerEventDroidIdle(psDroid);
 	}
 }
@@ -3365,6 +3373,9 @@ DROID *giftSingleDroid(DROID *psD, UDWORD to)
 		eventFireCallbackTrigger((TRIGGER_TYPE)CALL_UNITTAKEOVER);
 		psScrCBDroidTaken = NULL;
 	}
+	#ifdef WITH_QTPLUGINS
+	qtPlugins->triggerEventObjectTransfer(psNewDroid, psD->player);
+	#endif
 	triggerEventObjectTransfer(psNewDroid, psD->player);
 	return psNewDroid;
 }
@@ -3454,6 +3465,9 @@ void SelectDroid(DROID *psDroid)
 		psDroid->selected = true;
 		intRefreshScreen();
 	}
+	#ifdef WITH_QTPLUGINS
+	qtPlugins->triggerEventSelected();
+	#endif
 	triggerEventSelected();
 }
 
@@ -3463,6 +3477,9 @@ void DeSelectDroid(DROID *psDroid)
 {
 	psDroid->selected = false;
 	intRefreshScreen();
+	#ifdef WITH_QTPLUGINS
+	qtPlugins->triggerEventSelected();
+	#endif
 	triggerEventSelected();
 }
 

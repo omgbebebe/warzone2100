@@ -60,6 +60,11 @@
 #include "drive.h"
 #include "qtscript.h"
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
+
 /* max and min vtol heights above terrain */
 #define	VTOL_HEIGHT_MIN				250
 #define	VTOL_HEIGHT_LEVEL			300
@@ -2258,10 +2263,16 @@ static void checkLocalFeatures(DROID *psDroid)
 			{
 				case FEAT_OIL_DRUM:
 					pickedUp = pickupOilDrum(psDroid->player, psObj->player);
+					#ifdef WITH_QTPLUGINS
+					qtPlugins->triggerEventPickup((FEATURE *)psObj, psDroid);
+					#endif
 					triggerEventPickup((FEATURE *)psObj, psDroid);
 					break;
 				case FEAT_GEN_ARTE:
 					pickedUp = pickupArtefact(psDroid->player, psObj->player);
+					#ifdef WITH_QTPLUGINS
+					qtPlugins->triggerEventPickup((FEATURE *)psObj, psDroid);
+					#endif
 					triggerEventPickup((FEATURE *)psObj, psDroid);
 					break;
 				default:
@@ -2529,6 +2540,9 @@ void moveUpdateDroid(DROID *psDroid)
 		// object moved from one tile to next, check to see if droid is near stuff.(oil)
 		checkLocalFeatures(psDroid);
 
+		#ifdef WITH_QTPLUGINS
+		qtPlugins->triggerEventDroidMoved(psDroid, oldx, oldy);
+		#endif
 		triggerEventDroidMoved(psDroid, oldx, oldy);
 	}
 
