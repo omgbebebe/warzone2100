@@ -117,8 +117,6 @@ noinst_HEADERS = \
 	power.h \
 	projectiledef.h \
 	projectile.h \
-	qtplugins.h \
-	qtpluginsinterface.h \
 	qtscript.h \
 	qtscriptfuncs.h \
 	radar.h \
@@ -232,7 +230,6 @@ warzone2100_SOURCES = \
 	pointtree.cpp \
 	power.cpp \
 	projectile.cpp \
-	qtplugins.cpp \
 	qtscript.cpp \
 	qtscriptfuncs.cpp \
 	radar.cpp \
@@ -284,6 +281,10 @@ endif
 
 if BACKEND_SDL
 warzone2100_LIBS += $(top_builddir)/lib/sdl/libsdl.a
+endif
+
+if WITH_QTPLUGINS
+warzone2100_LIBS += $(top_builddir)/lib/qtplugins/libqtplugins.a
 endif
 
 warzone2100_LDADD = $(warzone2100_LIBS) $(LTLIBINTL) $(SDL_LIBS) $(PHYSFS_LIBS) $(PNG_LIBS) $(VORBISFILE_LIBS) $(VORBIS_LIBS) \

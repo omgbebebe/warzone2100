@@ -86,13 +86,16 @@
 #include "keybind.h"
 #include "wrappers.h"
 #include "random.h"
-#include "qtplugins.h"
 #include "qtscript.h"
 
 #include "warzoneconfig.h"
 
 #ifdef DEBUG
 #include "objmem.h"
+#endif
+
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
 #endif
 
 #include <numeric>
@@ -576,7 +579,9 @@ static void gameStateUpdate()
 		updateScripts();
 	}
 
+#ifdef WITH_QTPLUGINS
 	updatePlugins();
+#endif
 
 	// Update abandoned structures
 	handleAbandonedStructures();

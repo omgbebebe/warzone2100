@@ -27,6 +27,10 @@ SUBDIRS = \
 	pkg/nsis \
 	tests
 
+if WITH_QTPLUGINS
+SUBDIRS += lib/qtplugins
+endif
+
 dist_doc_DATA = \
 	AUTHORS \
 	ChangeLog \

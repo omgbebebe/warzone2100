@@ -1,15 +1,15 @@
 #ifndef qtpluginsinterface_H
 #define qtpluginsinterface_H
 
-#include <QObject>
+//#include <QObject>
 #include <QString>
 #include "qtpluginsunitsdefs.h"
 
 class IHostInterface
 {
 public:
-    virtual ~IHostInterface();
-//    virtual void debug(QString msg) = 0;
+    virtual ~IHostInterface() {}
+    virtual void dbg(QString msg) = 0;
 
     virtual QList<Unit> getUnits() = 0; // return all visible units
     // commands
@@ -28,7 +28,7 @@ public:
     virtual QString version() = 0;
     virtual void setHostInterface(IHostInterface*) = 0;
 
-// events callback
+    // events callback
     virtual void onLoad() = 0;
 
     virtual void onStart() = 0;

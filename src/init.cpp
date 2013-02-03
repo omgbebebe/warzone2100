@@ -95,9 +95,12 @@
 #include "wrappers.h"
 #include "terrain.h"
 #include "ingameop.h"
-#include "qtplugins.h"
 #include "qtscript.h"
 #include "template.h"
+
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
 
 static void	initMiscVars(void);
 
@@ -998,10 +1001,12 @@ bool stageTwoInitialise(void)
 		return false;
 	}
 
+#ifdef WITH_QTPLUGINS
 	if (!initPlugins())             // Initialise the plugins system
         {
                return false;
         }
+#endif
 
 
 	// keymappings
@@ -1119,7 +1124,9 @@ bool stageThreeInitialise(void)
 
 	prepareScripts();
 
+#ifdef WITH_QTPLUGINS
 	preparePlugins();
+#endif
 
 	if (!fpathInitialise())
 	{
@@ -1194,10 +1201,12 @@ bool stageThreeShutDown(void)
 		return false;
 	}
 
+#ifdef WITH_QTPLUGINS
 	if (!shutdownPlugins())
 	{
 		return false;
 	}
+#endif
 
 	challengesUp = false;
 	challengeActive = false;
