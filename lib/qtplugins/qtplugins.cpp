@@ -1,4 +1,5 @@
 #include "lib/framework/frame.h"
+#include "../../src/objmem.h"
 #include "qtplugins.h"
 #include <QString>
 #include <QDir>
@@ -82,5 +83,20 @@ QtPluginsEngine::~QtPluginsEngine()
 QList<Unit> QtPluginsEngine::getUnits()
 {
     QList<Unit> units;
+    for (DROID *psDroid = apsDroidLists[0]; psDroid; psDroid = psDroid->psNext){
+        Unit u;
+        u.id = psDroid->id;
+        u.x  = psDroid->pos.x;
+        u.y  = psDroid->pos.y;
+        u.z  = psDroid->pos.z;
+        u.t  = fromObjectType(psDroid->type);
+        u.health = psDroid->body;
+        units.append(u);
+    }
     return units;
+}
+
+UnitType QtPluginsEngine::fromObjectType(const OBJECT_TYPE &ot)
+{
+    return ST_HQ;
 }

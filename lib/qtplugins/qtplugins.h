@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QList>
 #include <QString>
+#include "../../src/objmem.h"
 
 bool initPlugins();
 bool preparePlugins();
@@ -75,6 +76,7 @@ private:
     IPluginInterface *iPluginInterface;
     bool loadPlugin();
 
+    UnitType fromObjectType(const OBJECT_TYPE&);
     QList<Unit> units;
 
 public slots:
