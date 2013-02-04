@@ -560,6 +560,10 @@ bool systemInitialise(void)
     {
         return false;
     }
+    if (!preparePlugins())
+    {
+        return false;
+    }
 #endif
 
 	return true;
@@ -577,6 +581,10 @@ void systemShutdown(void)
 	{
 		free(mod_list);
 	}
+
+#ifdef WITH_QTPLUGINS
+	shutdownPlugins();             // Shutdown the plugins system
+#endif
 
 	shutdownEffectsSystem();
 	keyClearMappings();
@@ -1125,10 +1133,6 @@ bool stageThreeInitialise(void)
 
 	prepareScripts();
 
-#ifdef WITH_QTPLUGINS
-	preparePlugins();
-#endif
-
 	if (!fpathInitialise())
 	{
 		return false;
@@ -1201,13 +1205,6 @@ bool stageThreeShutDown(void)
 	{
 		return false;
 	}
-
-#ifdef WITH_QTPLUGINS
-	if (!shutdownPlugins())
-	{
-		return false;
-	}
-#endif
 
 	challengesUp = false;
 	challengeActive = false;
