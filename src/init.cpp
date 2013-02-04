@@ -555,6 +555,13 @@ bool systemInitialise(void)
 
 	readAIs();
 
+#ifdef WITH_QTPLUGINS
+	if (!initPlugins())             // Initialise the plugins system
+    {
+        return false;
+    }
+#endif
+
 	return true;
 }
 
@@ -1001,12 +1008,6 @@ bool stageTwoInitialise(void)
 		return false;
 	}
 
-#ifdef WITH_QTPLUGINS
-	if (!initPlugins())             // Initialise the plugins system
-        {
-               return false;
-        }
-#endif
 
 
 	// keymappings

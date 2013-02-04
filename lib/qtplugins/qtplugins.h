@@ -75,10 +75,18 @@ public:
 private:
     IPluginInterface *iPluginInterface;
     bool loadPlugin();
+    int myPlayer;
 
     UnitType fromObjectType(const OBJECT_TYPE&);
     QList<Unit> units;
 
+    QList<Unit> getFeatures();
+    // converters
+    Unit toUnit(FEATURE*);
+    Unit toUnit(DROID*);
+    Unit toUnit(STRUCTURE*);
+
+    int whoAmI();
 public slots:
     void getPluginVersion();
 };

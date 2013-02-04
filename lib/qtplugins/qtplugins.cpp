@@ -1,5 +1,6 @@
 #include "lib/framework/frame.h"
 #include "../../src/objmem.h"
+#include "../../src/multiplay.h"
 #include "qtplugins.h"
 #include <QString>
 #include <QDir>
@@ -96,7 +97,41 @@ QList<Unit> QtPluginsEngine::getUnits()
     return units;
 }
 
+QList<Unit> QtPluginsEngine::getFeatures()
+{
+    QList<Unit> units;
+    for (FEATURE *f = apsFeatureLists[0]; f; f = f->psNext){
+        units.append(toUnit(f));
+    }
+    return units;
+}
+
 UnitType QtPluginsEngine::fromObjectType(const OBJECT_TYPE &ot)
 {
     return ST_HQ;
+}
+
+Unit QtPluginsEngine::toUnit(DROID *d)
+{
+    Unit u;
+    return u;
+}
+Unit QtPluginsEngine::toUnit(FEATURE *f)
+{
+    Unit u;
+    return u;
+}
+Unit QtPluginsEngine::toUnit(STRUCTURE *s)
+{
+    Unit u;
+    return u;
+}
+
+int QtPluginsEngine::whoAmI()
+{
+    for (int i = 0; i < MAX_PLAYERS; i++){
+        if (myResponsibility(i))
+            return i;
+    }
+    return -1;
 }
