@@ -29,8 +29,29 @@ public:
     virtual bool actionAttack(UnitId unitId, UnitId victimId) = 0;
     virtual bool actionStop(UnitId unitId) = 0;
     //events
-    virtual void gameEvent(SCRIPT_TRIGGER_TYPE ev) = 0;
-    virtual void gameEvent(SCRIPT_TRIGGER_TYPE ev, DROID *pDroid) = 0;
+    virtual void triggerEvent(SCRIPT_TRIGGER_TYPE ev) = 0;
+    virtual void triggerEvent(SCRIPT_TRIGGER_TYPE ev, DROID *pDroid) = 0;
+    virtual void triggerEventDroidBuilt(DROID *psDroid, STRUCTURE *psFactory) = 0;
+    virtual void triggerEventAttacked(BASE_OBJECT *psVictim, BASE_OBJECT *psAttacker, int lastHit) = 0;
+    virtual void triggerEventResearched(RESEARCH *psResearch, STRUCTURE *psStruct, int player) = 0;
+    virtual void triggerEventStructBuilt(STRUCTURE *psStruct, DROID *psDroid) = 0;
+    virtual void triggerEventDroidIdle(DROID *psDroid) = 0;
+    virtual void triggerEventDestroyed(BASE_OBJECT *psVictim) = 0;
+    virtual void triggerEventStructureReady(STRUCTURE *psStruct) = 0;
+    virtual void triggerEventSeen(BASE_OBJECT *psViewer, BASE_OBJECT *psSeen) = 0;
+    virtual void triggerEventObjectTransfer(BASE_OBJECT *psObj, int from) = 0;
+    virtual void triggerEventChat(int from, int to, const char *message) = 0;
+    virtual void triggerEventBeacon(int from, int to, const char *message, int x, int y) = 0;
+    virtual void triggerEventBeaconRemoved(int from, int to) = 0;
+    virtual void triggerEventPickup(FEATURE *psFeat, DROID *psDroid) = 0;
+    virtual void triggerEventCheatMode(bool entered) = 0;
+    //virtual void triggerEventGroupLoss(BASE_OBJECT *psObj, int group, int size, QScriptEngine *engine) = 0;
+    virtual void triggerEventDroidMoved(DROID *psDroid, int oldx, int oldy) = 0;
+    virtual void triggerEventArea(QString label, DROID *psDroid) = 0;
+    virtual void triggerEventSelected() = 0;
+    virtual void triggerEventPlayerLeft(int id) = 0;
+    virtual void triggerEventDesignCreated(DROID_TEMPLATE *psTemplate) = 0;
+
 };
 
 Q_DECLARE_INTERFACE(IHostInterface, "net.wz2100.Plugin.IHostInterface/0.0.1")
@@ -80,8 +101,28 @@ public:
 //    ~QtPluginsEngine();
     //events
     void evGameInit();
-    void gameEvent(SCRIPT_TRIGGER_TYPE ev);
-    void gameEvent(SCRIPT_TRIGGER_TYPE ev, DROID *pDroid);
+    void triggerEvent(SCRIPT_TRIGGER_TYPE ev);
+    void triggerEvent(SCRIPT_TRIGGER_TYPE ev, DROID *pDroid);
+    void triggerEventDroidBuilt(DROID *psDroid, STRUCTURE *psFactory);
+    void triggerEventAttacked(BASE_OBJECT *psVictim, BASE_OBJECT *psAttacker, int lastHit);
+    void triggerEventResearched(RESEARCH *psResearch, STRUCTURE *psStruct, int player);
+    void triggerEventStructBuilt(STRUCTURE *psStruct, DROID *psDroid);
+    void triggerEventDroidIdle(DROID *psDroid);
+    void triggerEventDestroyed(BASE_OBJECT *psVictim);
+    void triggerEventStructureReady(STRUCTURE *psStruct);
+    void triggerEventSeen(BASE_OBJECT *psViewer, BASE_OBJECT *psSeen);
+    void triggerEventObjectTransfer(BASE_OBJECT *psObj, int from);
+    void triggerEventChat(int from, int to, const char *message);
+    void triggerEventBeacon(int from, int to, const char *message, int x, int y);
+    void triggerEventBeaconRemoved(int from, int to);
+    void triggerEventPickup(FEATURE *psFeat, DROID *psDroid);
+    void triggerEventCheatMode(bool entered);
+    //void triggerEventGroupLoss(BASE_OBJECT *psObj, int group, int size, QScriptEngine *engine);
+    void triggerEventDroidMoved(DROID *psDroid, int oldx, int oldy);
+    void triggerEventArea(QString label, DROID *psDroid);
+    void triggerEventSelected();
+    void triggerEventPlayerLeft(int id);
+    void triggerEventDesignCreated(DROID_TEMPLATE *psTemplate);
 
 private:
     IPluginInterface *iPluginInterface;

@@ -99,6 +99,11 @@
 #include "template.h"
 #include "qtscript.h" // this is fun...
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
+
 static INTERP_VAL	scrFunctionResult;	//function return value to be pushed to stack
 
 // If this is defined then check max number of units not reached before adding more.
@@ -9076,6 +9081,9 @@ bool addBeaconBlip(SDWORD locX, SDWORD locY, SDWORD forPlayer, SDWORD sender, co
 	//call beacon callback only if not adding for ourselves
 	if (forPlayer != sender)
 	{
+		#ifdef WITH_QTPLUGINS
+		qtPlugins->triggerEventBeacon(sender, forPlayer, textMsg, locX, locY);
+		#endif
 		triggerEventBeacon(sender, forPlayer, textMsg, locX, locY);
 
 		if (!msgStackPush(CALL_BEACON, sender, forPlayer, textMsg, locX, locY, NULL))
@@ -9233,6 +9241,9 @@ bool scrRemoveBeacon(void)
 	{
 		//delete it
 		removeMessage(psMessage, player);
+		#ifdef WITH_QTPLUGINS
+		qtPlugins->triggerEventBeaconRemoved(sender, player);
+		#endif
 		triggerEventBeaconRemoved(sender, player);
 	}
 

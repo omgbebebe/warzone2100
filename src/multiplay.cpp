@@ -71,6 +71,10 @@
 #include "keymap.h"
 #include "cheat.h"
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
 // globals.
@@ -1099,6 +1103,9 @@ bool sendTextMessage(const char *pStr, bool all, uint32_t from)
 		printchatmsg(normal ? curStr : display, from);
 	}
 
+	#ifdef WITH_QTPLUGINS
+	qtPlugins->triggerEventChat(from, from, pStr);
+	#endif
 	triggerEventChat(from, from, pStr); // send to self
 
 	if (!all)
@@ -1174,6 +1181,9 @@ bool sendTextMessage(const char *pStr, bool all, uint32_t from)
 			if (i != from && !isHumanPlayer(i) && myResponsibility(i))
 			{
 				msgStackPush(CALL_AI_MSG, from, i, msg, -1, -1, NULL);
+				#ifdef WITH_QTPLUGINS
+				qtPlugins->triggerEventChat(from, i, msg);
+				#endif
 				triggerEventChat(from, i, msg);
 			}
 			else if (i != from && !isHumanPlayer(i) && !myResponsibility(i))
@@ -1202,6 +1212,9 @@ bool sendTextMessage(const char *pStr, bool all, uint32_t from)
 				else if (myResponsibility(i))
 				{
 					msgStackPush(CALL_AI_MSG, from, i, msg, -1, -1, NULL);
+					#ifdef WITH_QTPLUGINS
+					qtPlugins->triggerEventChat(from, i, msg);
+					#endif
 					triggerEventChat(from, i, msg);
 				}
 				else	// send to AIs on different host
@@ -1231,6 +1244,9 @@ bool sendTextMessage(const char *pStr, bool all, uint32_t from)
 				else if (myResponsibility(i))
 				{
 					msgStackPush(CALL_AI_MSG, from, i, curStr, -1, -1, NULL);
+					#ifdef WITH_QTPLUGINS
+					qtPlugins->triggerEventChat(from, i, curStr);
+					#endif
 					triggerEventChat(from, i, curStr);
 				}
 				else	//also send to AIs now (non-humans), needed for AI
@@ -1401,6 +1417,9 @@ bool recvTextMessageAI(NETQUEUE queue)
 	}
 
 	sstrcpy(msg, newmsg);
+	#ifdef WITH_QTPLUGINS
+	qtPlugins->triggerEventChat(sender, receiver, newmsg);
+	#endif
 	triggerEventChat(sender, receiver, newmsg);
 
 	//Received a console message from a player callback

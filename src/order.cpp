@@ -66,11 +66,6 @@
 
 #include "random.h"
 
-#ifdef WITH_QTPLUGINS
-#include "lib/qtplugins/qtplugins.h"
-#endif
-
-
 /** How long a droid runs after it fails do respond due to low moral. */
 #define RUN_TIME		8000
 
@@ -334,9 +329,6 @@ void orderUpdateDroid(DROID *psDroid)
 				{
 					// the script can call startMission for this callback for offworld missions
 					eventFireCallbackTrigger((TRIGGER_TYPE)CALL_START_NEXT_LEVEL);
-					#ifdef WITH_QTPLUGINS
-					qtPlugins->gameEvent(TRIGGER_START_LEVEL);
-					#endif
 					triggerEvent(TRIGGER_START_LEVEL);
 				}
 			}
@@ -420,9 +412,6 @@ void orderUpdateDroid(DROID *psDroid)
 			{
 			    //the script can call startMission for this callback for offworld missions
 			    eventFireCallbackTrigger((TRIGGER_TYPE)CALL_START_NEXT_LEVEL);
-			    #ifdef WITH_QTPLUGINS
-			    qtPlugins->gameEvent(TRIGGER_START_LEVEL);
-			    #endif
 			    triggerEvent(TRIGGER_START_LEVEL);
 
 				/* clear order */
@@ -1128,9 +1117,6 @@ void orderUpdateDroid(DROID *psDroid)
 				{
 					// the script can call startMission for this callback for offworld missions
 					eventFireCallbackTrigger((TRIGGER_TYPE)CALL_START_NEXT_LEVEL);
-					#ifdef WITH_QTPLUGINS
-					qtPlugins->gameEvent(TRIGGER_START_LEVEL);
-					#endif
 					triggerEvent(TRIGGER_START_LEVEL);
 				}
 			}

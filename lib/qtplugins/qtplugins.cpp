@@ -36,6 +36,11 @@ QtPluginsEngine::QtPluginsEngine()
     return;
 }
 
+QtPluginsEngine::~QtPluginsEngine()
+{
+    return;
+}
+
 bool QtPluginsEngine::loadPlugin()
 {
     dbg("Trying load plugin");
@@ -72,11 +77,6 @@ void QtPluginsEngine::dbg(QString msg)
 }
 
 void QtPluginsEngine::getPluginVersion()
-{
-    return;
-}
-
-QtPluginsEngine::~QtPluginsEngine()
 {
     return;
 }
@@ -142,13 +142,158 @@ void QtPluginsEngine::evGameInit()
 }
 
 // events
-void QtPluginsEngine::gameEvent(SCRIPT_TRIGGER_TYPE ev)
+void QtPluginsEngine::triggerEvent(SCRIPT_TRIGGER_TYPE ev)
 {
-    dbg(QString("event triggered: %1").arg(ev));
+    QString evName;
+    switch(ev){
+    case TRIGGER_GAME_INIT:
+        evName="gameInit";
+        break;
+    case TRIGGER_START_LEVEL:
+        evName="gameStartLevel";
+        break;
+    case TRIGGER_TRANSPORTER_ARRIVED:
+        evName="gameTransporterArrived";
+        break;
+    case TRIGGER_TRANSPORTER_LANDED:
+        evName="gameTransporterLanded";
+        break;
+    case TRIGGER_TRANSPORTER_LAUNCH:
+        evName="gameTransportelLaunch";
+        break;
+    case TRIGGER_TRANSPORTER_EXIT:
+        evName="gameTransporterExit";
+        break;
+    case TRIGGER_TRANSPORTER_DONE:
+        evName="gameTransportedDone";
+        break;
+    case TRIGGER_VIDEO_QUIT:
+        evName="gameVideoQuit";
+        break;
+    case TRIGGER_MISSION_TIMEOUT:
+        evName="gameMissionTimeout";
+        break;
+    case TRIGGER_GAME_LOADED:
+        evName="gameGameLoaded";
+        break;
+    case TRIGGER_GAME_SAVING:
+        evName="gameGameSaving";
+        break;
+    case TRIGGER_GAME_SAVED:
+        evName="gameGameSaved";
+        break;
+    default:
+        evName=QString("unknownEventId: %1").arg(ev);
+    }
+
+    dbg(QString("event triggered: %1").arg(evName));
     return;
 }
-void QtPluginsEngine::gameEvent(SCRIPT_TRIGGER_TYPE ev, DROID *pDroid)
+
+void QtPluginsEngine::triggerEvent(SCRIPT_TRIGGER_TYPE ev, DROID *pDroid)
 {
     dbg(QString("event triggered: %1, droidId: %2").arg(ev).arg(pDroid->id));
+    return;
+}
+
+void QtPluginsEngine::triggerEventDroidBuilt(DROID *psDroid, STRUCTURE *psFactory)
+{
+    return;
+}
+
+void QtPluginsEngine::triggerEventAttacked(BASE_OBJECT *psVictim, BASE_OBJECT *psAttacker, int lastHit)
+{
+    return;
+}
+
+void QtPluginsEngine::triggerEventResearched(RESEARCH *psResearch, STRUCTURE *psStruct, int player)
+{
+    return;
+}
+
+void QtPluginsEngine::triggerEventStructBuilt(STRUCTURE *psStruct, DROID *psDroid)
+{
+    return;
+}
+
+void QtPluginsEngine::triggerEventDroidIdle(DROID *psDroid)
+{
+    return;
+}
+
+void QtPluginsEngine::triggerEventDestroyed(BASE_OBJECT *psVictim)
+{
+    return;
+}
+
+void QtPluginsEngine::triggerEventStructureReady(STRUCTURE *psStruct)
+{
+    return;
+}
+
+void QtPluginsEngine::triggerEventSeen(BASE_OBJECT *psViewer, BASE_OBJECT *psSeen)
+{
+    return;
+}
+
+void QtPluginsEngine::triggerEventObjectTransfer(BASE_OBJECT *psObj, int from)
+{
+    return;
+}
+
+void QtPluginsEngine::triggerEventChat(int from, int to, const char *message)
+{
+    return;
+}
+
+void QtPluginsEngine::triggerEventBeacon(int from, int to, const char *message, int x, int y)
+{
+    return;
+}
+
+void QtPluginsEngine::triggerEventBeaconRemoved(int from, int to)
+{
+    return;
+}
+
+void QtPluginsEngine::triggerEventPickup(FEATURE *psFeat, DROID *psDroid)
+{
+    return;
+}
+
+void QtPluginsEngine::triggerEventCheatMode(bool entered)
+{
+    return;
+}
+
+/*
+void QtPluginsEngine::triggerEventGroupLoss(BASE_OBJECT *psObj, int group, int size, QScriptEngine *engine)
+{
+    return;
+}
+*/
+
+void QtPluginsEngine::triggerEventDroidMoved(DROID *psDroid, int oldx, int oldy)
+{
+    return;
+}
+
+void QtPluginsEngine::triggerEventArea(QString label, DROID *psDroid)
+{
+    return;
+}
+
+void QtPluginsEngine::triggerEventSelected()
+{
+    return;
+}
+
+void QtPluginsEngine::triggerEventPlayerLeft(int id)
+{
+    return;
+}
+
+void QtPluginsEngine::triggerEventDesignCreated(DROID_TEMPLATE *psTemplate)
+{
     return;
 }

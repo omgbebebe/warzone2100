@@ -78,10 +78,6 @@
 #include "combat.h"
 #include "qtscript.h"
 
-#ifdef WITH_QTPLUGINS
-#include "lib/qtplugins/qtplugins.h"
-#endif
-
 #define		IDMISSIONRES_TXT		11004
 #define		IDMISSIONRES_LOAD		11005
 #define		IDMISSIONRES_CONTINUE		11008
@@ -1786,9 +1782,6 @@ void unloadTransporter(DROID *psTransporter, UDWORD x, UDWORD y, bool goingHome)
 		/* trigger script callback detailing group about to disembark */
 		transporterSetScriptCurrent(psTransporter);
 		eventFireCallbackTrigger((TRIGGER_TYPE)CALL_TRANSPORTER_LANDED);
-		#ifdef WITH_QTPLUGINS
-		qtPlugins->gameEvent(TRIGGER_TRANSPORTER_LANDED, psTransporter);
-		#endif
 		triggerEvent(TRIGGER_TRANSPORTER_LANDED, psTransporter);
 		transporterSetScriptCurrent(NULL);
 
@@ -1830,9 +1823,6 @@ void missionMoveTransporterOffWorld(DROID *psTransporter)
 		/* trigger script callback */
 		transporterSetScriptCurrent(psTransporter);
 		eventFireCallbackTrigger((TRIGGER_TYPE)CALL_TRANSPORTER_OFFMAP);
-		#ifdef WITH_QTPLUGINS
-		qtPlugins->gameEvent(TRIGGER_TRANSPORTER_EXIT, psTransporter);
-		#endif
 		triggerEvent(TRIGGER_TRANSPORTER_EXIT, psTransporter);
 		transporterSetScriptCurrent(NULL);
 
@@ -1874,9 +1864,6 @@ void missionMoveTransporterOffWorld(DROID *psTransporter)
 			if (psDroid == NULL)
 			{
 				eventFireCallbackTrigger((TRIGGER_TYPE)CALL_NO_REINFORCEMENTS_LEFT);
-				#ifdef WITH_QTPLUGINS
-				qtPlugins->gameEvent(TRIGGER_TRANSPORTER_DONE, psTransporter);
-				#endif
 				triggerEvent(TRIGGER_TRANSPORTER_DONE, psTransporter);
 			}
 		}
@@ -2157,9 +2144,6 @@ void intUpdateTransporterTimer(WIDGET *psWidget, W_CONTEXT *psContext)
 					{
 						missionFlyTransportersIn(selectedPlayer, false);
 						eventFireCallbackTrigger((TRIGGER_TYPE)CALL_TRANSPORTER_REINFORCE);
-						#ifdef WITH_QTPLUGINS
-						qtPlugins->gameEvent(TRIGGER_TRANSPORTER_ARRIVED, psTransporter);
-						#endif
 						triggerEvent(TRIGGER_TRANSPORTER_ARRIVED, psTransporter);
 					}
 				}
@@ -2891,9 +2875,6 @@ void missionTimerUpdate(void)
 			{
 				//the script can call the end game cos have failed!
 				eventFireCallbackTrigger((TRIGGER_TYPE)CALL_MISSION_TIME);
-				#ifdef WITH_QTPLUGINS
-				qtPlugins->gameEvent(TRIGGER_MISSION_TIMEOUT);
-				#endif
 				triggerEvent(TRIGGER_MISSION_TIMEOUT);
 			}
 		}

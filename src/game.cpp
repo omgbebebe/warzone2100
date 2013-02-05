@@ -92,10 +92,6 @@
 #include "keymap.h"
 #include <ctime>
 
-#ifdef WITH_QTPLUGINS
-#include "lib/qtplugins/qtplugins.h"
-#endif
-
 #define MAX_SAVE_NAME_SIZE_V19	40
 #define MAX_SAVE_NAME_SIZE	60
 
@@ -2523,9 +2519,6 @@ bool saveGame(char *aFileName, GAME_TYPE saveType)
 	DROID			*psDroid, *psNext;
 	char			CurrentFileName[PATH_MAX] = {'\0'};
 
-	#ifdef WITH_QTPLUGINS
-	qtPlugins->gameEvent(TRIGGER_GAME_SAVING);
-	#endif
 	triggerEvent(TRIGGER_GAME_SAVING);
 
 	ASSERT_OR_RETURN(false, aFileName && strlen(aFileName) > 4, "Bad savegame filename");
@@ -2807,9 +2800,6 @@ bool saveGame(char *aFileName, GAME_TYPE saveType)
 	CurrentFileName[fileExtension-1] = '\0';
 
 	/* Start the game clock */
-	#ifdef WITH_QTPLUGINS
-	qtPlugins->gameEvent(TRIGGER_GAME_SAVED);
-	#endif
 	triggerEvent(TRIGGER_GAME_SAVED);
 	gameTimeStart();
 	return true;

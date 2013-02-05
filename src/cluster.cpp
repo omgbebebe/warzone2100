@@ -34,6 +34,10 @@
 #include "projectile.h"
 #include "qtscript.h"
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
 // distance between units for them to be in the same cluster
 #define CLUSTER_DIST	(TILE_UNITS*8)
 
@@ -480,6 +484,9 @@ void clustObjectSeen(BASE_OBJECT *psObj, BASE_OBJECT *psViewer)
 			psScrCBObjSeen = psObj;
 			psScrCBObjViewer = psViewer;
 			eventFireCallbackTrigger((TRIGGER_TYPE)CALL_OBJ_SEEN);
+			#ifdef WITH_QTPLUGINS
+			qtPlugins->triggerEventSeen(psViewer, psObj);
+			#endif
 			triggerEventSeen(psViewer, psObj);
 
 			switch (psObj->type)

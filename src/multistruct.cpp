@@ -51,6 +51,10 @@
 #include "keymap.h"
 #include "combat.h"
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
 // ////////////////////////////////////////////////////////////////////////////
 // structures
 
@@ -147,6 +151,9 @@ bool recvBuildFinished(NETQUEUE queue)
 #if defined (DEBUG)
 		NETlogEntry("had to plonk down a building", SYNC_FLAG, player);
 #endif
+		#ifdef WITH_QTPLUGINS
+		qtPlugins->triggerEventStructBuilt(psStruct, NULL);
+		#endif
 		triggerEventStructBuilt(psStruct, NULL);
 	}
 	else

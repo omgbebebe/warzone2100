@@ -78,6 +78,10 @@
 #include "qtscript.h"
 #include "warzoneconfig.h"
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
 struct	_dragBox dragBox3D,wallDrag;
 
 #define POSSIBLE_SELECTIONS		14
@@ -1650,6 +1654,9 @@ static void dealWithLMBDroid(DROID* psDroid, SELECTION_TYPE selection)
 			if (bMultiPlayer && !bRightClickOrders)
 			{
 				psDroid->selected = true;
+				#ifdef WITH_QTPLUGINS
+				qtPlugins->triggerEventSelected();
+				#endif
 				triggerEventSelected();
 			}
 			else
@@ -1866,6 +1873,9 @@ static void dealWithLMBStructure(STRUCTURE* psStructure, SELECTION_TYPE selectio
 				}
 				/* Establish new one */
 				psStructure->selected = true;
+				#ifdef WITH_QTPLUGINS
+				qtPlugins->triggerEventSelected();
+				#endif
 				triggerEventSelected();
 			}
 			//determine if LasSat structure has been selected
@@ -1886,6 +1896,9 @@ static void dealWithLMBStructure(STRUCTURE* psStructure, SELECTION_TYPE selectio
 		}
 		/* Establish new one */
 		psStructure->selected = true;
+		#ifdef WITH_QTPLUGINS
+		qtPlugins->triggerEventSelected();
+		#endif
 		triggerEventSelected();
 	}
 	bSensorAssigned = false;
@@ -2357,6 +2370,9 @@ static void dealWithRMB( void )
 				{
 					psStructure->selected = false;
 					intObjectSelected(NULL);
+					#ifdef WITH_QTPLUGINS
+					qtPlugins->triggerEventSelected();
+					#endif
 					triggerEventSelected();
 				}
 				else if (!structureIsBlueprint(psStructure))
@@ -2377,6 +2393,9 @@ static void dealWithRMB( void )
 							FeedbackOrderGiven();
 
 							bLasSatStruct = lasSatStructSelected(psStructure);
+							#ifdef WITH_QTPLUGINS
+							qtPlugins->triggerEventSelected();
+							#endif
 							triggerEventSelected();
 						}
 					}
@@ -2879,6 +2898,9 @@ void clearSel()
 	setSelectedCommander(UBYTE_MAX);
 	intRefreshScreen();
 
+	#ifdef WITH_QTPLUGINS
+	qtPlugins->triggerEventSelected();
+	#endif
 	triggerEventSelected();
 }
 

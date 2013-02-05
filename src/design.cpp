@@ -82,6 +82,11 @@
 #include "multistat.h"
 #include "qtscript.h"
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
+
 #define FLASH_BUTTONS		// Enable flashing body part buttons.
 
 #define TAB_USEMAJOR 0
@@ -4240,6 +4245,9 @@ void intProcessDesign(UDWORD id)
 		if (saveTemplate())
 		{
 			eventFireCallbackTrigger((TRIGGER_TYPE)CALL_DROIDDESIGNED);
+			#ifdef WITH_QTPLUGINS
+			qtPlugins->triggerEventDesignCreated(&sCurrDesign);
+			#endif
 			triggerEventDesignCreated(&sCurrDesign);
 		}
 

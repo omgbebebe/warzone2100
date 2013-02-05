@@ -70,6 +70,11 @@
 #include "qtscript.h"
 #include "scriptcb.h"
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
+
 // ////////////////////////////////////////////////////////////////////////////
 // Local Functions
 
@@ -303,6 +308,9 @@ bool MultiPlayerLeave(UDWORD playerIndex)
 	// fire script callback to reassign skirmish players.
 	CBPlayerLeft = playerIndex;
 	eventFireCallbackTrigger((TRIGGER_TYPE)CALL_PLAYERLEFT);
+	#ifdef WITH_QTPLUGINS
+	qtPlugins->triggerEventPlayerLeft(playerIndex);
+	#endif
 	triggerEventPlayerLeft(playerIndex);
 
 	netPlayersUpdated = true;

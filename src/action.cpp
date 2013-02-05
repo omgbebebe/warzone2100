@@ -842,7 +842,7 @@ void actionUpdateDroid(DROID *psDroid)
 					//the script can call startMission for this callback for offworld missions
 					eventFireCallbackTrigger((TRIGGER_TYPE)CALL_START_NEXT_LEVEL);
 					#ifdef WITH_QTPLUGINS
-					qtPlugins->gameEvent(TRIGGER_START_LEVEL);
+					qtPlugins->triggerEvent(TRIGGER_START_LEVEL);
 					#endif
 					triggerEvent(TRIGGER_START_LEVEL);
 				}
@@ -871,6 +871,9 @@ void actionUpdateDroid(DROID *psDroid)
 				psScrCBOrderDroid = NULL;
 				psScrCBOrder = DORDER_NONE;
 
+				#ifdef WITH_QTPLUGINS
+				qtPlugins->triggerEventDroidIdle(psDroid);
+				#endif
 				triggerEventDroidIdle(psDroid);
 			}
 		}

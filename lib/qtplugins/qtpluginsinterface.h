@@ -4,7 +4,7 @@
 //#include <QObject>
 #include <QString>
 #include "qtpluginsunitsdefs.h"
-
+/*
 class IHostInterface
 {
 public:
@@ -46,6 +46,6 @@ public:
 };
 
 Q_DECLARE_INTERFACE(IPluginInterface, "net.wz2100.Plugins.IPluginInterface/0.0.1")
-
+*/
 
 #endif

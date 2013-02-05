@@ -33,6 +33,10 @@
 #include "multiplay.h"
 #include "qtscript.h"
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
 struct CHEAT_ENTRY
 {
 	const char *pName;
@@ -174,11 +178,17 @@ void recvProcessDebugMappings(NETQUEUE queue)
 	{
 		addConsoleMessage(_("Debug mode now enabled!"), DEFAULT_JUSTIFY,  SYSTEM_MESSAGE);
 		Cheated = true;
+		#ifdef WITH_QTPLUGINS
+		qtPlugins->triggerEventCheatMode(true);
+		#endif
 		triggerEventCheatMode(true);
 	}
 	else if (oldDebugMode && !newDebugMode)
 	{
 		addConsoleMessage(_("Debug mode now disabled!"), DEFAULT_JUSTIFY,  SYSTEM_MESSAGE);
+		#ifdef WITH_QTPLUGINS
+		qtPlugins->triggerEventCheatMode(false);
+		#endif
 		triggerEventCheatMode(false);
 	}
 }
