@@ -1186,6 +1186,9 @@ bool stageThreeInitialise(void)
 	if (getLevelLoadType() != GTYPE_SAVE_MIDMISSION)
 	{
 		eventFireCallbackTrigger((TRIGGER_TYPE)CALL_GAMEINIT);
+		#ifdef WITH_QTPLUGINS
+		qtPlugins->triggerEvent(TRIGGER_GAME_INIT);
+		#endif
 		triggerEvent(TRIGGER_GAME_INIT);
 #ifdef WITH_QTPLUGINS
         qtPlugins->evGameInit();

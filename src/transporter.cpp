@@ -57,6 +57,11 @@
 #include "multiplay.h"
 #include "qtscript.h"
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
+
 //#define IDTRANS_FORM			9000	//The Transporter base form
 #define IDTRANS_TABFORM			9001	//The Transporter tabbed form
 #define IDTRANS_CLOSE			9002	//The close button icon
@@ -1519,6 +1524,9 @@ bool updateTransporter(DROID *psTransporter)
 
 			//the script can call startMission for this callback for offworld missions
 			eventFireCallbackTrigger((TRIGGER_TYPE)CALL_START_NEXT_LEVEL);
+			#ifdef WITH_QTPLUGINS
+			qtPlugins->triggerEvent(TRIGGER_START_LEVEL);
+			#endif
 			triggerEvent(TRIGGER_START_LEVEL);
 
 			// clear order
@@ -1604,6 +1612,9 @@ void processLaunchTransporter(void)
 			widgSetUserData(psWScreen, IDTRANTIMER_DISPLAY, (void *)psCurrTransporter);
 
 			eventFireCallbackTrigger((TRIGGER_TYPE)CALL_LAUNCH_TRANSPORTER);
+			#ifdef WITH_QTPLUGINS
+			qtPlugins->triggerEvent(TRIGGER_TRANSPORTER_LAUNCH, psCurrTransporter);
+			#endif
 			triggerEvent(TRIGGER_TRANSPORTER_LAUNCH, psCurrTransporter);
 		}
 	}

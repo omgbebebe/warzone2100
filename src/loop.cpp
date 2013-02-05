@@ -764,6 +764,9 @@ void videoLoop(void)
 			{
 				displayGameOver(getScriptWinLoseVideo() == PLAY_WIN);
 			}
+			#ifdef WITH_QTPLUGINS
+			qtPlugins->triggerEvent(TRIGGER_VIDEO_QUIT);
+			#endif
 			triggerEvent(TRIGGER_VIDEO_QUIT);
 		}
 	}
