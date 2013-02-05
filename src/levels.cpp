@@ -53,6 +53,10 @@
 #include "multiint.h"
 #include "qtscript.h"
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
 extern int lev_get_lineno(void);
 extern char* lev_get_text(void);
 extern int lev_lex(void);
@@ -1047,6 +1051,9 @@ bool levLoadData(char const *name, Sha256 const *hash, char *pSaveName, GAME_TYP
 	ssprintf(buf, "Current Level/map is %s", psCurrLevel->pName);
 	addDumpInfo(buf);
 
+	#ifdef WITH_QTPLUGINS
+	qtPlugins->gameEvent(TRIGGER_GAME_LOADED);
+	#endif
 	triggerEvent(TRIGGER_GAME_LOADED);
 
 	return true;

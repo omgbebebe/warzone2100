@@ -44,6 +44,10 @@
 #include "transporter.h"
 #include "mapgrid.h"
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
 /* attack run distance */
 #define	VTOL_ATTACK_LENGTH		1000
 #define VTOL_ATTACK_TARDIST		400
@@ -837,6 +841,9 @@ void actionUpdateDroid(DROID *psDroid)
 				{
 					//the script can call startMission for this callback for offworld missions
 					eventFireCallbackTrigger((TRIGGER_TYPE)CALL_START_NEXT_LEVEL);
+					#ifdef WITH_QTPLUGINS
+					qtPlugins->gameEvent(TRIGGER_START_LEVEL);
+					#endif
 					triggerEvent(TRIGGER_START_LEVEL);
 				}
 			}

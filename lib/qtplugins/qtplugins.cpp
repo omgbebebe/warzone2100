@@ -6,12 +6,12 @@
 #include <QDir>
 #include <QPluginLoader>
 
-QtPluginsEngine *plugin;
+QtPluginsEngine *qtPlugins;
 
 bool initPlugins()
 {
     debug(LOG_SCRIPT, "initialize plugins");
-    plugin = new QtPluginsEngine();
+    qtPlugins = new QtPluginsEngine();
     return true;
 }
 
@@ -134,4 +134,21 @@ int QtPluginsEngine::whoAmI()
             return i;
     }
     return -1;
+}
+
+void QtPluginsEngine::evGameInit()
+{
+    dbg("event: game init.");
+}
+
+// events
+void QtPluginsEngine::gameEvent(SCRIPT_TRIGGER_TYPE ev)
+{
+    dbg(QString("event triggered: %1").arg(ev));
+    return;
+}
+void QtPluginsEngine::gameEvent(SCRIPT_TRIGGER_TYPE ev, DROID *pDroid)
+{
+    dbg(QString("event triggered: %1, droidId: %2").arg(ev).arg(pDroid->id));
+    return;
 }

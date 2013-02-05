@@ -7,6 +7,10 @@
 #include <QList>
 #include <QString>
 #include "../../src/objmem.h"
+#include "../../src/qtscript.h"
+
+class QtPluginsEngine;
+extern QtPluginsEngine* qtPlugins;
 
 bool initPlugins();
 bool preparePlugins();
@@ -24,6 +28,9 @@ public:
     virtual bool actionBuild(UnitId unitId, int x, int y, int z, UnitType stType) = 0;
     virtual bool actionAttack(UnitId unitId, UnitId victimId) = 0;
     virtual bool actionStop(UnitId unitId) = 0;
+    //events
+    virtual void gameEvent(SCRIPT_TRIGGER_TYPE ev) = 0;
+    virtual void gameEvent(SCRIPT_TRIGGER_TYPE ev, DROID *pDroid) = 0;
 };
 
 Q_DECLARE_INTERFACE(IHostInterface, "net.wz2100.Plugin.IHostInterface/0.0.1")
@@ -71,6 +78,10 @@ public:
 
     QList<Unit> getUnits();
 //    ~QtPluginsEngine();
+    //events
+    void evGameInit();
+    void gameEvent(SCRIPT_TRIGGER_TYPE ev);
+    void gameEvent(SCRIPT_TRIGGER_TYPE ev, DROID *pDroid);
 
 private:
     IPluginInterface *iPluginInterface;
