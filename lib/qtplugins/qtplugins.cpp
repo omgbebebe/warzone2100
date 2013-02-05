@@ -198,71 +198,85 @@ void QtPluginsEngine::triggerEvent(SCRIPT_TRIGGER_TYPE ev, DROID *pDroid)
 
 void QtPluginsEngine::triggerEventDroidBuilt(DROID *psDroid, STRUCTURE *psFactory)
 {
+    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
 }
 
 void QtPluginsEngine::triggerEventAttacked(BASE_OBJECT *psVictim, BASE_OBJECT *psAttacker, int lastHit)
 {
+    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
 }
 
 void QtPluginsEngine::triggerEventResearched(RESEARCH *psResearch, STRUCTURE *psStruct, int player)
 {
+    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
 }
 
 void QtPluginsEngine::triggerEventStructBuilt(STRUCTURE *psStruct, DROID *psDroid)
 {
+    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
 }
 
 void QtPluginsEngine::triggerEventDroidIdle(DROID *psDroid)
 {
+    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
 }
 
 void QtPluginsEngine::triggerEventDestroyed(BASE_OBJECT *psVictim)
 {
+    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
 }
 
 void QtPluginsEngine::triggerEventStructureReady(STRUCTURE *psStruct)
 {
+    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
 }
 
 void QtPluginsEngine::triggerEventSeen(BASE_OBJECT *psViewer, BASE_OBJECT *psSeen)
 {
+    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
 }
 
 void QtPluginsEngine::triggerEventObjectTransfer(BASE_OBJECT *psObj, int from)
 {
+    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
 }
 
 void QtPluginsEngine::triggerEventChat(int from, int to, const char *message)
 {
+    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
 }
 
 void QtPluginsEngine::triggerEventBeacon(int from, int to, const char *message, int x, int y)
 {
+    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
 }
 
 void QtPluginsEngine::triggerEventBeaconRemoved(int from, int to)
 {
+    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
 }
 
 void QtPluginsEngine::triggerEventPickup(FEATURE *psFeat, DROID *psDroid)
 {
+    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
 }
 
 void QtPluginsEngine::triggerEventCheatMode(bool entered)
 {
+    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
 }
 
@@ -275,25 +289,30 @@ void QtPluginsEngine::triggerEventGroupLoss(BASE_OBJECT *psObj, int group, int s
 
 void QtPluginsEngine::triggerEventDroidMoved(DROID *psDroid, int oldx, int oldy)
 {
+    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
 }
 
 void QtPluginsEngine::triggerEventArea(QString label, DROID *psDroid)
 {
+    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
 }
 
 void QtPluginsEngine::triggerEventSelected()
 {
+    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
 }
 
 void QtPluginsEngine::triggerEventPlayerLeft(int id)
 {
+    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
 }
 
 void QtPluginsEngine::triggerEventDesignCreated(DROID_TEMPLATE *psTemplate)
 {
+    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
 }
