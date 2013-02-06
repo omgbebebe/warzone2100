@@ -8,6 +8,7 @@
 #include <QString>
 #include "../../src/objmem.h"
 #include "../../src/qtscript.h"
+#include "../../src/actiondef.h" // actions enums definitions
 
 class QtPluginsEngine;
 extern QtPluginsEngine* qtPlugins;
@@ -17,17 +18,28 @@ bool preparePlugins();
 bool shutdownPlugins();
 bool updatePlugins();
 
+typedef int Player;
+
 class IHostInterface
 {
 public:
     virtual ~IHostInterface() {}
     virtual void dbg(QString msg) = 0;
 
+    // game info
+    virtual Player whoAmI() = 0;
+    virtual QList<Player> myAllies() = 0;
     virtual QList<Unit> getUnits() = 0; // return all visible units
     // commands
+    //virtual bool startBuild(UnitId droidId, StructureType structT, Position pos, bool exactPosition) = 0;
+    //virtual bool helpBuild(UnitId droidId, UnitId structId) = 0;
+    //virtual bool demolish(StructureId structId) = 0;
+
+    //virtual bool action(DROID_ACTION action) = 0;
     virtual bool actionBuild(UnitId unitId, int x, int y, int z, UnitType stType) = 0;
     virtual bool actionAttack(UnitId unitId, UnitId victimId) = 0;
     virtual bool actionStop(UnitId unitId) = 0;
+/*
     //events
     virtual void triggerEvent(SCRIPT_TRIGGER_TYPE ev) = 0;
     virtual void triggerEvent(SCRIPT_TRIGGER_TYPE ev, DROID *pDroid) = 0;
@@ -51,7 +63,7 @@ public:
     virtual void triggerEventSelected() = 0;
     virtual void triggerEventPlayerLeft(int id) = 0;
     virtual void triggerEventDesignCreated(DROID_TEMPLATE *psTemplate) = 0;
-
+*/
 };
 
 Q_DECLARE_INTERFACE(IHostInterface, "net.wz2100.Plugin.IHostInterface/0.0.1")
@@ -97,6 +109,10 @@ public:
     bool actionAttack(UnitId, UnitId) {return true;}
     bool actionStop(UnitId) {return true;}
 
+    // game info
+    Player whoAmI();
+    QList<Player> myAllies();
+
     QList<Unit> getUnits();
 //    ~QtPluginsEngine();
     //events
@@ -138,7 +154,12 @@ private:
     Unit toUnit(DROID*);
     Unit toUnit(STRUCTURE*);
 
-    int whoAmI();
+    bool isVisibleBy(const BASE_OBJECT *pViewer, const BASE_OBJECT *pTarget);
+    bool isVisible(const BASE_OBJECT *pTarget);
+
+    //internal helpers
+    QList<Unit> ourUnits();
+    bool isOur(const BASE_OBJECT *pObj);
 public slots:
     void getPluginVersion();
 };
