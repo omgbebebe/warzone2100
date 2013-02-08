@@ -36,7 +36,7 @@ public:
     //virtual bool demolish(StructureId structId) = 0;
 
     //virtual bool action(DROID_ACTION action) = 0;
-    virtual bool actionBuild(UnitId unitId, int x, int y, int z, UnitType stType) = 0;
+    virtual bool actionBuild(UnitId unitId, int x, int y, UnitType stType) = 0;
     virtual bool actionAttack(UnitId unitId, UnitId victimId) = 0;
     virtual bool actionStop(UnitId unitId) = 0;
 /*
@@ -66,7 +66,7 @@ public:
 */
 };
 
-Q_DECLARE_INTERFACE(IHostInterface, "net.wz2100.Plugin.IHostInterface/0.0.1")
+Q_DECLARE_INTERFACE(IHostInterface, "net.wz2100.Plugin.IHostInterface/0.0.2")
 
 
 class IPluginInterface
@@ -93,7 +93,7 @@ public:
 
 };
 
-Q_DECLARE_INTERFACE(IPluginInterface, "net.wz2100.Plugins.IPluginInterface/0.0.1")
+Q_DECLARE_INTERFACE(IPluginInterface, "net.wz2100.Plugins.IPluginInterface/0.0.2")
 
 
 class QtPluginsEngine : public QObject, public IHostInterface
@@ -105,7 +105,7 @@ public:
     QtPluginsEngine();
     ~QtPluginsEngine();
     void dbg(QString msg);
-    bool actionBuild(UnitId, int, int, int, UnitType) {return true;}
+    bool actionBuild(UnitId builderId, int x, int y, UnitType stType);
     bool actionAttack(UnitId, UnitId) {return true;}
     bool actionStop(UnitId) {return true;}
 
@@ -159,6 +159,9 @@ private:
 
     //internal helpers
     QList<Unit> ourUnits();
+    bool canCommand(UnitId uId);
+    BASE_OBJECT* unitToObject(UnitId uId, Player player);
+
     bool isOur(const BASE_OBJECT *pObj);
 public slots:
     void getPluginVersion();

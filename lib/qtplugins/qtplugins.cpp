@@ -1,4 +1,4 @@
-#include "lib/framework/frame.h"
+#include "../framework/frame.h"
 #include "../../src/objmem.h"
 #include "../../src/multiplay.h"
 #include "qtplugins.h"
@@ -6,6 +6,8 @@
 #include <QDir>
 #include <QPluginLoader>
 #include "../../src/ai.h" // alliances definition
+#include "../../src/order.h" // orderDroid
+#include "../../src/structure.h" // getStructStatFromName
 
 QtPluginsEngine *qtPlugins;
 
@@ -31,6 +33,18 @@ bool updatePlugins()
     return true;
 }
 
+bool QtPluginsEngine::actionBuild(UnitId builderId, int x, int y, UnitType stType)
+{
+    if (!canCommand(builderId)){
+        dbg("you can't command this unit");
+    }
+    int tid = getStructStatFromName("StructName");
+    STRUCTURE_STATS* psStat = &asStructureStats[tid];
+    //DroidOrder sOrder(order, psStats, Vector2i(x, y), direction);
+    orderDroidStatsLocDir(IdToDroid(builderId, whoAmI()), DORDER_BUILD, psStat, x, y, 0, ModeImmediate);
+    return true;
+}
+
 QtPluginsEngine::QtPluginsEngine()
 {
     loadPlugin();
@@ -49,7 +63,7 @@ bool QtPluginsEngine::loadPlugin()
     pluginsDir.cd("plugins");
     const QString filter = "lib*.so";
     foreach (QString fileName, pluginsDir.entryList(QStringList() << filter, QDir::NoDotAndDotDot | QDir::Files)) {
-        dbg(QString("fund plugin: %1").arg(pluginsDir.absoluteFilePath(fileName)));
+        dbg(QString("found plugin: %1").arg(pluginsDir.absoluteFilePath(fileName)));
         QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
         QObject *plugin = pluginLoader.instance();
         if (plugin) {
@@ -85,15 +99,19 @@ void QtPluginsEngine::getPluginVersion()
 QList<Unit> QtPluginsEngine::getUnits()
 {
     QList<Unit> units;
-    for (DROID *psDroid = apsDroidLists[0]; psDroid; psDroid = psDroid->psNext){
-        Unit u;
-        u.id = psDroid->id;
-        u.x  = psDroid->pos.x;
-        u.y  = psDroid->pos.y;
-        u.z  = psDroid->pos.z;
-        u.t  = fromObjectType(psDroid->type);
-        u.health = psDroid->body;
-        units.append(u);
+    QList<Player> we = myAllies();
+    we.append(whoAmI());
+    for (int i = 0; i < we.length(); i++){
+        for (DROID *psDroid = apsDroidLists[i]; psDroid; psDroid = psDroid->psNext){
+                Unit u;
+                u.id = psDroid->id;
+                u.x  = psDroid->pos.x;
+                u.y  = psDroid->pos.y;
+                u.z  = psDroid->pos.z;
+                u.t  = fromObjectType(psDroid->type);
+                u.health = psDroid->body;
+                units.append(u);
+        }
     }
     return units;
 }
@@ -150,6 +168,10 @@ QList<Player> QtPluginsEngine::myAllies()
 
 bool QtPluginsEngine::isOur(const BASE_OBJECT *pObj)
 {
+    if (!pObj){
+        dbg("******* RECEIVED NULL POINTER TO OBJ!!!");
+        return false;
+    }
     if (pObj->player == whoAmI() || myAllies().contains(pObj->player))
         return true;
     return false;
@@ -217,13 +239,17 @@ void QtPluginsEngine::triggerEvent(SCRIPT_TRIGGER_TYPE ev)
 // TODO: maybe remove this func. only one callback with DROID* param
 void QtPluginsEngine::triggerEvent(SCRIPT_TRIGGER_TYPE ev, DROID *pDroid)
 {
-    dbg(QString("event triggered: %1, droidId: %2").arg(ev).arg(pDroid->id));
+    if(pDroid)
+        dbg(QString("event triggered: %1, droidId: %2").arg(ev).arg(pDroid->id));
+    else
+        dbg(QString("event triggered: %1").arg(ev));
     return;
 }
 
 // must be our droid
 void QtPluginsEngine::triggerEventDroidBuilt(DROID *psDroid, STRUCTURE *psFactory)
 {
+//    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     if (isOur(psDroid))
         dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
@@ -232,15 +258,19 @@ void QtPluginsEngine::triggerEventDroidBuilt(DROID *psDroid, STRUCTURE *psFactor
 // victim or attacker must be our droid or struct
 void QtPluginsEngine::triggerEventAttacked(BASE_OBJECT *psVictim, BASE_OBJECT *psAttacker, int lastHit)
 {
+//    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     if (isOur(psVictim) || isOur(psVictim))
         dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
 }
 
 // struct must be our
+// if player != me then psStruct is NULL
+// be carefull
 void QtPluginsEngine::triggerEventResearched(RESEARCH *psResearch, STRUCTURE *psStruct, int player)
 {
-    if (isOur(psStruct))
+//    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
+    if (player == whoAmI() || myAllies().contains(player))
         dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
 }
@@ -248,6 +278,7 @@ void QtPluginsEngine::triggerEventResearched(RESEARCH *psResearch, STRUCTURE *ps
 // droid bust be our
 void QtPluginsEngine::triggerEventStructBuilt(STRUCTURE *psStruct, DROID *psDroid)
 {
+//    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     if (isOur(psDroid))
         dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
@@ -256,6 +287,7 @@ void QtPluginsEngine::triggerEventStructBuilt(STRUCTURE *psStruct, DROID *psDroi
 // droid bust be our
 void QtPluginsEngine::triggerEventDroidIdle(DROID *psDroid)
 {
+//    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     if (isOur(psDroid))
         dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
@@ -264,7 +296,7 @@ void QtPluginsEngine::triggerEventDroidIdle(DROID *psDroid)
 // victim must be our
 void QtPluginsEngine::triggerEventDestroyed(BASE_OBJECT *psVictim)
 {
-    if (isOur(psVictim))
+    //if (isOur(psVictim))
         dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
 }
@@ -272,6 +304,7 @@ void QtPluginsEngine::triggerEventDestroyed(BASE_OBJECT *psVictim)
 // struct must be our
 void QtPluginsEngine::triggerEventStructureReady(STRUCTURE *psStruct)
 {
+//    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     if (isOur(psStruct))
         dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
@@ -280,6 +313,7 @@ void QtPluginsEngine::triggerEventStructureReady(STRUCTURE *psStruct)
 // viever must be our
 void QtPluginsEngine::triggerEventSeen(BASE_OBJECT *psViewer, BASE_OBJECT *psSeen)
 {
+//    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     if (isOur(psViewer))
         dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
@@ -321,6 +355,7 @@ void QtPluginsEngine::triggerEventBeaconRemoved(int from, int to)
 // droid must be our
 void QtPluginsEngine::triggerEventPickup(FEATURE *psFeat, DROID *psDroid)
 {
+//    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     if (isOur(psDroid))
         dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
@@ -343,6 +378,7 @@ void QtPluginsEngine::triggerEventGroupLoss(BASE_OBJECT *psObj, int group, int s
 // droid must be our
 void QtPluginsEngine::triggerEventDroidMoved(DROID *psDroid, int oldx, int oldy)
 {
+//    dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     if (isOur(psDroid))
         dbg(QString("complex event: %1").arg(Q_FUNC_INFO));
     return;
@@ -398,5 +434,28 @@ bool QtPluginsEngine::isVisible(const BASE_OBJECT *pTarget)
         // unit to BASE_OBJECT by id
         // if (isVisibleBy(unitObject, pTarget)) return true;
     }
+    return false;
+}
+
+BASE_OBJECT* QtPluginsEngine::unitToObject(UnitId uId, Player player)
+{
+    // temp boilerplate
+    BASE_OBJECT* pObj = (BASE_OBJECT*)IdToDroid(uId, player);
+    if (pObj)
+        return pObj;
+    pObj = (BASE_OBJECT*)IdToFeature(uId, player);
+    if (pObj)
+        return pObj;
+    pObj = (BASE_OBJECT*)IdToStruct(uId, player);
+    if (pObj)
+        return pObj;
+    return NULL;
+}
+
+bool QtPluginsEngine::canCommand(UnitId uId)
+{
+    BASE_OBJECT *pObj = unitToObject(uId, whoAmI());
+    if (pObj != NULL && pObj->player == whoAmI())
+        return true;
     return false;
 }
