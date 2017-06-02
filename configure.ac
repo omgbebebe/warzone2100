@@ -110,6 +110,15 @@ AC_PATH_PROGS(MOC5, [moc-qt5 moc], moc, ["${QT_HOST_PATH}" "${QT_PATH}/bin"])
 AC_PATH_PROGS(UIC5, [uic-qt5 uic], uic, ["${QT_HOST_PATH}" "${QT_PATH}/bin"])
 AC_PATH_PROGS(RCC5, [rcc-qt5 rcc], rcc, ["${QT_HOST_PATH}" "${QT_PATH}/bin"])
 
+AC_MSG_CHECKING([for qtplugins])
+AC_ARG_WITH([qtplugins],
+	AS_HELP_STRING([--without-qtplugins], [disable build with QtPlugins subsystem]))
+AM_CONDITIONAL([WITH_QTPLUGINS], test "x$with_qtplugins" = "xyes")
+if test "x$with_qtplugins" = "xyes"; then
+	WZ_CPPFLAGS="${WZ_CPPFLAGS} -DWITH_QTPLUGINS"
+fi
+
+
 # Check for compiler
 case ${CC} in
 	icc)
@@ -509,6 +518,7 @@ AC_CONFIG_FILES([Makefile
 		lib/ivis_opengl/Makefile
 		lib/netplay/Makefile
 		lib/qtgame/Makefile
+                lib/qtplugins/Makefile
 		lib/sdl/Makefile
 		lib/script/Makefile
 		lib/sequence/Makefile

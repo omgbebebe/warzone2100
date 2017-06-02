@@ -321,6 +321,14 @@ warzone2100_LIBS += $(top_builddir)/lib/sdl/libsdl.a \
 endif
 endif
 
+if WITH_QTPLUGINS
+if PORTABLE
+warzone2100_portable_LIBS += $(top_builddir)/lib/qtplugins/libqtplugins.a
+else
+warzone2100_LIBS += $(top_builddir)/lib/qtplugins/libqtplugins.a
+endif
+endif
+
 # Here, we need to bring in the "plugins" for Qt5 and they MUST come before the other QT libs.
 # FIXME: At a future date, we should check if they want static builds, but, since we only support those for now...
 if MINGW32

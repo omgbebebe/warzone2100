@@ -93,6 +93,10 @@
 #include "objmem.h"
 #endif
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
 #include <numeric>
 
 
@@ -576,6 +580,9 @@ static void gameStateUpdate()
 			eventProcessTriggers(realTime / SCR_TICKRATE);
 		}
 		updateScripts();
+		#ifdef WITH_QTPLUGINS
+		updatePlugins();
+		#endif
 	}
 
 	// Update abandoned structures

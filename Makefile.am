@@ -16,6 +16,7 @@ SUBDIRS = \
 	lib/sound \
 	lib/netplay \
 	lib/widget \
+	lib/qtplugins \
 	$(backend_subdir) \
 	tools/map \
 	src \
@@ -25,6 +26,7 @@ SUBDIRS = \
 	icons \
 	pkg/nsis \
 	tests
+
 
 dist_doc_DATA = \
 	AUTHORS \

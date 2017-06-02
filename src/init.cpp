@@ -95,6 +95,10 @@
 #include "qtscript.h"
 #include "template.h"
 
+#ifdef WITH_QTPLUGINS
+#include "lib/qtplugins/qtplugins.h"
+#endif
+
 static void initMiscVars();
 
 static const char UserMusicPath[] = "music";
@@ -726,6 +730,20 @@ bool systemInitialise()
 	pie_InitRadar();
 
 	readAIs();
+
+	debug(LOG_INFO, "Init: initialize plugins");
+
+#ifdef WITH_QTPLUGINS
+	if (!initPlugins())             // Initialise the plugins system
+	{
+		debug(LOG_FATAL, "cannot initialize plugins");
+		return false;
+	}
+	if (!preparePlugins())
+	{
+		return false;
+	}
+#endif
 
 	return true;
 }

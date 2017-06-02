@@ -156,6 +156,13 @@ data/mp/multiplay/skirmish/nb_rulesets/standard.js
 data/mp/multiplay/skirmish/nb_turtle.js
 data/mp/multiplay/skirmish/nexus.slo
 data/mp/multiplay/skirmish/rules.js
+data/mp/multiplay/skirmish/semperfi_includes/build.js
+data/mp/multiplay/skirmish/semperfi_includes/chat.js
+data/mp/multiplay/skirmish/semperfi_includes/events.js
+data/mp/multiplay/skirmish/semperfi_includes/miscFunctions.js
+data/mp/multiplay/skirmish/semperfi_includes/production.js
+data/mp/multiplay/skirmish/semperfi_includes/research.js
+data/mp/multiplay/skirmish/semperfi_includes/tactics.js
 data/mp/multiplay/skirmish/semperfi.js
 data/mp/multiplay/skirmish/semperfi.slo
 lib/exceptionhandler/dumpinfo.cpp

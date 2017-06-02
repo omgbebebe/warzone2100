@@ -7,7 +7,7 @@ let
 in rec {
   wz2100 = stdenv.mkDerivation {
     name = "warzone2100";
-    nativeBuildInputs = with pkgs; [ cmake gcc perl zip unzip pkgconfig libtool ];
+    nativeBuildInputs = with pkgs; [ autoconf automake cmake gcc perl zip unzip pkgconfig libtool ];
     buildInputs = with pkgs; [
       qt5.qtbase
       qt5.qtscript
